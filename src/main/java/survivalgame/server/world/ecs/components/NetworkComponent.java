@@ -11,6 +11,7 @@ import survivalgame.server.util.RpcWrapper;
 import survivalgame.server.world.Player;
 
 public class NetworkComponent extends Component {
+    private int mDbId;
     // Optimize manually the dequeue
     private Deque<RpcWrapper> mRpcSafeQueue = new LinkedList<>();
     private Player mOwner;
@@ -40,6 +41,14 @@ public class NetworkComponent extends Component {
     
     public Deque<RpcWrapper> getRpcPacketsToProcess() {
         return mRpcSafeQueue;
+    }
+    
+    public void setDbId(int id) {
+        mDbId = id;
+    }
+    
+    public int getDbId() {
+        return mDbId;
     }
     
     public enum Relation {
