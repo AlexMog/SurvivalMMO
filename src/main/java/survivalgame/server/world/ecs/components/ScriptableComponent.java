@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaFunction;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.LuajavaLib;
 
 public class ScriptableComponent extends EnablableComponent {
     private Map<String, LuaValue> mScripts = new HashMap<>();
@@ -42,11 +42,16 @@ public class ScriptableComponent extends EnablableComponent {
     // TODO Use a template system instead, to cache Lua scripts instead of defining each time the functions.
     public void initMethods() {
         for (LuaValue script : mScripts.values()) {
-            script.set("ENT", CoerceJavaToLua.coerce(mEntity));
+//            script.set("ENT", CoerceJavaToLua.coerce(mEntity));
             for (Events e : Events.values()) {
-                LuaValue fnc = script.get(e.getEventFunction());
-                if (fnc == LuaValue.NIL) continue;
-                setEventFunction(e.ordinal(), (LuaFunction) fnc);
+                try {
+                    System.out.println(e.getEventFunction());
+                    LuaValue fnc = script.get(e.getEventFunction());
+                    if (fnc == LuaValue.NIL) continue;
+                    setEventFunction(e.ordinal(), (LuaFunction) fnc);
+                } catch (LuaError ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
@@ -66,7 +71,9 @@ public class ScriptableComponent extends EnablableComponent {
     }
     
     public void executeMethod(Events e, Object...args) {
-        for (LuaFunction method : mEventFunctions.get(e.ordinal())) {
+        List<LuaFunction> list = mEventFunctions.get(e.ordinal());
+        if (list == null || list.size() == 0) return;
+        for (LuaFunction method : list) {
             LuaValue[] vars = new LuaValue[args.length];
             for (int i = 0; i < args.length; ++i) vars[i] = CoerceJavaToLua.coerce(args[i]);
             if (method != null) method.invoke(LuaValue.varargsOf(vars));

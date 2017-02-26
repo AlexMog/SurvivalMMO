@@ -40,7 +40,7 @@ public class BodyComponent extends Component {
     }
     
     public boolean intersects(Rectangle body2) {
-        return body2.contains(mBounds);
+        return body2.contains(mBounds); // TODO Add Z-axis
     }
     
     public List<BodyEntity> getCurrentCollisions() {

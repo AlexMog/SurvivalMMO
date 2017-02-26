@@ -13,7 +13,7 @@ public class NetworkEntitiesSystem extends EntityProcessingSystem {
     public NetworkEntitiesSystem() {
         super(Aspect.all(NetworkComponent.class));
     }
-
+    
     @Override
     protected void process(Entity e) {
         NetworkComponent c = mNetIdComponents.get(e);
