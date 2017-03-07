@@ -72,7 +72,7 @@ public class Quadtree {
     }
 
     private int getIndex(BodyEntity entity) {
-        Shape rect = entity.body.getBounds();
+        Shape rect = entity.body.getBounds().getRectangle();
         int index = -1;
         double verticalMidPoint = mBounds.getX() + (mBounds.getWidth() / 2);
         double horizontalMidPoint = mBounds.getY() + (mBounds.getHeight() / 2);

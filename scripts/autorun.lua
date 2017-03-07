@@ -1,6 +1,6 @@
 -- Create entity template
 -- CreateEntityTemplate(name, clientObjectId);
-local TEMPLATE = CreateEntityTemplate("Test", 0);
+local TEMPLATE = Core.createEntityTemplate("Test", 0);
 local events = {};
 
 TEMPLATE:setCollisionsBox(10, 10, 5);
@@ -43,10 +43,10 @@ function events:awake()
 
 end
 
--- TEMPLATE:RegisterEvent("awake", awake);
+-- TEMPLATE:registerEvent("awake", awake);
 
 for k, v in pairs(events) do
-	TEMPLATE:RegisterEvent(k, v); -- Register all events for which handlers have been defined
+	TEMPLATE:registerEvent(k, v); -- Register all events for which handlers have been defined
 end
 
 function RPC1()
@@ -54,4 +54,4 @@ function RPC1()
 end
 
 -- ORDER IS IMPORTANT
-TEMPLATE:registerRpc(RPC1, "Integer", "Boolean");
+TEMPLATE:registerRpc(RPC1, {"Integer", "Boolean"});

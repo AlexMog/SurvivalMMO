@@ -3,27 +3,26 @@ package survivalgame.server.world.ecs.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.artemis.Component;
 
+import survivalgame.server.world.collisions.BodyBounds;
 import survivalgame.utils.Quadtree.BodyEntity;
 
 public class BodyComponent extends Component {
-    private final Rectangle mBounds = new Rectangle(0, 0, 0, 0);
+    private final BodyBounds mBounds = new BodyBounds();
     private final List<BodyEntity> mCurrentCollisions = new ArrayList<>();
     private final List<BodyEntity> mOldCollisions = new ArrayList<>();
     private final List<BodyEntity> mEntered = new ArrayList<>();
     private final List<BodyEntity> mExited = new ArrayList<>();
     
     public float[] getPosition() {
-        return mBounds.getCenter();
+        return mBounds.getPosition();
     }
     
     public void setPosition(Vector2f position) {
-        mBounds.setCenterX(position.x);
-        mBounds.setCenterY(position.y);
+        mBounds.setPosition(position);
     }
     
     public void setSize(float width, float height) {
@@ -31,16 +30,15 @@ public class BodyComponent extends Component {
     }
     
     public void setPosition(float x, float y) {
-        mBounds.setCenterX(x);
-        mBounds.setCenterY(y);
+        mBounds.setPosition(x, y);
     }
     
-    public Rectangle getBounds() {
+    public BodyBounds getBounds() {
         return mBounds;
     }
     
-    public boolean intersects(Rectangle body2) {
-        return body2.contains(mBounds); // TODO Add Z-axis
+    public boolean intersects(BodyBounds body2) {
+        return body2.contains(mBounds);
     }
     
     public List<BodyEntity> getCurrentCollisions() {
